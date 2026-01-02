@@ -1,0 +1,50 @@
+RAM Allocation [bytes]
+Variable                                                                          Address   Size
+------------------------------------------------------------------------------------------------
+g_time_ticks                                                                      0x0300       4
+lane_event_pending                                                                0x0304       8
+lane_event_time                                                                   0x030C      32
+rx_buffer0                                                                        0x032C     256
+rx_wr_index0                                                                      0x042C       1
+rx_rd_index0                                                                      0x042D       1
+rx_counter0                                                                       0x042E       2
+tx_buffer0                                                                        0x0430     256
+tx_wr_index0                                                                      0x0530       1
+tx_rd_index0                                                                      0x0531       1
+tx_counter0                                                                       0x0532       2
+lane_last_time                                                                    0x0534      32
+low_count (sensors.c)                                                             0x0554       8
+last_sample_tick (switches.c)                                                     0x055C       4
+last_raw (switches.c)                                                             0x0560       1
+stable_state (switches.c)                                                         0x0561       1
+stable_count (switches.c)                                                         0x0562       1
+press_start_tick (switches.c)                                                     0x0563       4
+
+EEPROM Allocation [bytes]
+Variable                                                                          Address   Size
+------------------------------------------------------------------------------------------------
+
+Register Allocation
+Variable                                                                          Register  Size
+------------------------------------------------------------------------------------------------
+rx_buffer_overflow0                                                               GPIOR0.0  1bit
+
+FLASH Allocation [words]
+Function                                                                          Address   Size
+------------------------------------------------------------------------------------------------
+led_poweron_blink                                                                 0x000A2     17
+print_startup_banner_G000                                                         0x000B3     29
+main                                                                              0x000D0     50
+usart_rx_isr                                                                      0x00102     31
+usart_tx_isr                                                                      0x00121     34
+putchar                                                                           0x00143     41
+uart_init                                                                         0x0016C     48
+setup                                                                             0x0019C     81
+timer1_ovf_isr                                                                    0x001ED    136
+switches_init                                                                     0x00275      3
+switch1_poll                                                                      0x00278    143
+put_usart_G100                                                                    0x00307     14
+_print_G100                                                                       0x00315    451
+printf                                                                            0x004D8     39
+strlen                                                                            0x004FF     12
+strlenf                                                                           0x0050B     13

@@ -1,0 +1,10 @@
+#ifndef SENSORS_H
+#define SENSORS_H
+
+#include <stdint.h>
+
+extern volatile unsigned long g_time_ticks;
+extern volatile unsigned char lane_event_pending[8];
+extern volatile unsigned long lane_event_time[8];
+void uart_init(unsigned long baud );
+#endif
