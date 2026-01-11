@@ -23,7 +23,7 @@ using utils.h  #define BIT(x) (1U << (x))
 Will have time stamp. main tick will continue to tick, no reset will last 5 days
 overflow will not cause a problem.
 Protocol
-@Atimeinticks
+@A,timeinticks,crlf
 All seems to work
 but reset seems to kill com port  260101
 260109
@@ -33,6 +33,8 @@ using GitHub trakmate/SCL-slotcar-firmware-260102
 you can use my .gitignore file in other projects
 
 *******************************************************/
+
+// 260111
 
 // I/O Registers definitions
 #include <mega328.h>
@@ -133,13 +135,31 @@ static void print_startup_banner(void)
 
 static void protocol_on_cmd(char cmd, const char* args)
 {
+   unsigned long ts;
     switch (cmd)
     {
         case 'P':
             if (args && args[0] == '1')
-                track_power_on();
+            {
+                track_power_on();    
+                 // send timestamped power-on event
+                // safe way of reading 32 bit value from interrupt     
+                #asm("cli")
+                ts = g_time_ticks;
+                #asm("sei")
+                
+                printf("@P,1,%lu\r\n", ts);
+            }
             else
+             {
                 track_power_off();
+                 #asm("cli")
+                ts = g_time_ticks;
+                #asm("sei")
+                
+                printf("@P,0,%lu\r\n", ts); 
+                  
+             }   
             break;
 
         case 'S':

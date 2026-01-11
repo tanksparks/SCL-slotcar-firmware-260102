@@ -19,7 +19,7 @@
 #define MIN_GAP_TICKS    50UL           // 5 ms between valid hits (50 * 0.1ms)
 
 // Global time in "ticks" (0.1 ms units at 10 kHz)
-volatile unsigned long g_time_ticks = 0;
+volatile unsigned long g_time_ticks = 0;       // 32 bit ticker
 
 // Per-lane timing + event flags
 volatile unsigned long lane_last_time[8]      = {0};
