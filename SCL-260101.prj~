@@ -6,10 +6,10 @@ CV=3.51 Standard
 A=
 C=
 D=12/31/2025
-Files=5
-OpenedFiles=16
+Files=7
+OpenedFiles=11
 OF1=SCLMEGA328-260101.c
-ActiveTab=14
+ActiveTab=1
 DebugOutputListFilesDirectory=Debug\List
 DebugOutputObjectFilesDirectory=Debug
 DebugOutputExecutableFilesDirectory=Debug\Exe
@@ -18,18 +18,13 @@ OutputListFilesDirectory=Release\List
 OutputObjectFilesDirectory=Release
 OutputExecutableFilesDirectory=Release\Exe
 OutputLinkerFilesDirectory=Release\Link
-AllowDisplayFunctionCallTree=1
+AllowDisplayFunctionCallTree=0
 CleanUp=2
-TimeStamp1=1545705653
+TimeStamp1=1545755349
 OF2=UART.c
 TimeStamp2=1545705192
 OF3=setup.c
-TimeStamp3=1545687879
-F1=SCLMEGA328-260101.c
-F2=UART.c
-F3=setup.c
-F4=sensors.c
-F5=switches.c
+TimeStamp3=1545706560
 OF4=sensors.c
 TimeStamp4=1545691254
 OF5=sensors.h
@@ -37,15 +32,15 @@ TimeStamp5=1545705762
 OF6=utils.h
 TimeStamp6=1545690747
 OF7=switches.c
-TimeStamp7=1545704321
-OF8=C:\cvavr\inc\io.h
-TimeStamp8=1448362764
-OF9=C:\cvavr\inc\stdint.h
-TimeStamp9=953299700
-OF10=setup.h
-TimeStamp10=1545687827
-OF11=C:\cvavr\inc\stdio.h
-TimeStamp11=1211658357
+TimeStamp7=1545706578
+OF8=setup.h
+TimeStamp8=1545687827
+OF9=switches.h
+TimeStamp9=1545705225
+OF10=UART.h
+TimeStamp10=1545706545
+OF11=version.h
+TimeStamp11=1545714518
 OF12=C:\cvavr\inc\mega328.h
 TimeStamp12=1028538144
 OF13=C:\cvavr\inc\mega328p.h
@@ -56,6 +51,13 @@ OF15=C:\cvavr\inc\stdarg.h
 TimeStamp15=926055432
 OF16=switches.h
 TimeStamp16=1545705225
+F1=SCLMEGA328-260101.c
+F2=UART.c
+F3=setup.c
+F4=sensors.c
+F5=switches.c
+F6=protocol.c
+F7=sniffer.c
 [CompilerDebug]
 Chip=ATmega328
 CPUClock=16000000
@@ -162,9 +164,9 @@ DisplayCodeSizeError=1
 UseBootAppXmega=0
 RebuildAll=0
 LinkageInformationPresent=1
-COFFileTimeStamp=1545714569
-Build=13
-GlobalVarAddr=1383
+COFFileTimeStamp=1546285777
+Build=18
+GlobalVarAddr=1870
 EEPROMVarAddr=0
 [DefinedSymbolsDebug]
 Count=0
@@ -275,7 +277,7 @@ UseBootAppXmega=0
 RebuildAll=1
 LinkageInformationPresent=0
 COFFileTimeStamp=-1
-Build=13
+Build=18
 IncludePath0=C:\cvavr\inc
 IncludePath1=
 IncludePath2=
@@ -539,52 +541,52 @@ L13=Enhanced function parameters passing: Mode 2
 L14=Automatic register allocation: Yes
 L15=Smart register allocation: Yes
 L16=
-L17=Build: 13
-L18=16373 line(s) compiled
-L19=No errors
-L20=No warnings
+L17=Build: 18
+L18=9941 line(s) compiled
+L19=3 error(s)
+L20=4 warning(s)
 L21=
-L22=Bit variables area: 0x2 to 0x2
-L23=Bit variables size: 1 byte(s)
-L24=
-L25=Data Stack area: 0x100 to 0x2FF
-L26=Data Stack size: 512 byte(s)
-L27=Estimated Data Stack usage: 73 byte(s)
-L28=
-L29=RAM Global variables area: 0x300 to 0x566
-L30=RAM Global variables size: 615 byte(s)
-L31=
-L32=Hardware Stack area: 0x567 to 0x8FF
-L33=Hardware Stack size: 921 byte(s)
+L22=Bit variables size: 0 byte(s)
+L23=
+L24=Data Stack area: 0x100 to 0x2FF
+L25=Data Stack size: 512 byte(s)
+L26=Estimated Data Stack usage: 0 byte(s)
+L27=
+L28=RAM Global variables size: 0 byte(s)
+L29=
+L30=Hardware Stack area: 0x300 to 0x8FF
+L31=Hardware Stack size: 1536 byte(s)
+L32=
+L33=Heap size: 0 byte(s)
 L34=
-L35=Heap size: 0 byte(s)
-Lines=39
+L35=EEPROM usage: 0 byte(s), 0.0% of EEPROM
+Lines=35
 L36=
 L37=EEPROM usage: 0 byte(s), 0.0% of EEPROM
-L38=Program size: 1612 words (3224 bytes), 9.8% of FLASH
+L38=Program size: 1609 words (3218 bytes), 9.8% of FLASH
 L39=78 words (156 bytes), 4.6% reduced by Code Compression
 [BuildInfoAssembler]
-Lines=12
+Lines=0
 L1=AVRASM: AVR macro assembler 2.1.30 (build 592 Nov  7 2008 12:38:17)
 L2=Copyright (C) 1995-2008 ATMEL Corporation
 L3=
-L4=Z:\OneDrive\TR\CV_data_use_me\TRproducts\SCLmega328-260101\Debug\List\SCL-260101.asm(3526): No EEPROM data, deleting Z:\OneDrive\TR\CV_data_use_me\TRproducts\SCLmega328-260101\Debug\Exe\SCL-260101.eep
+L4=Z:\OneDrive\TR\CV_data_use_me\TRproducts\SCLmega328-260101\Debug\List\SCL-260101.asm(3678): No EEPROM data, deleting Z:\OneDrive\TR\CV_data_use_me\TRproducts\SCLmega328-260101\Debug\Exe\SCL-260101.eep
 L5=
 L6=ATmega328 memory use summary [bytes]:
 L7=Segment   Begin    End      Code   Data   Used    Size   Use%
 L8=---------------------------------------------------------------
-L9=[.cseg] 0x000000 0x000c98   3096    128   3224   32768   9.8%
-L10=[.dseg] 0x000100 0x000567      0    615    615    2048  30.0%
+L9=[.cseg] 0x000000 0x000c92   3084    134   3218   32768   9.8%
+L10=[.dseg] 0x000100 0x00074e      0   1102   1102    2048  53.8%
 L11=[.eseg] 0x000000 0x000000      0      0      0    1024   0.0%
 L12=
 [Bookmarks0]
-Row=0
-Column=0
+Row=4
+Column=30
 ScrollPosX=0
 ScrollPosY=0
-TimeStamp=1545705831
+TimeStamp=1545765161
 [BookmarksFoldedCode]
-Files=23
+Files=28
 F1=Z:\OneDrive\TR\CV_data_use_me\TRproducts\SCLMEGA328-260101.c
 F2=Z:\OneDrive\TR\CV_data_use_me\TRproducts\UART.h
 F3=Z:\OneDrive\TR\CV_data_use_me\TRproducts\UART.c
@@ -608,6 +610,11 @@ F20=C:\cvavr\inc\stdio.h
 F21=setup.h
 F22=C:\cvavr\inc\stdint.h
 F23=Z:\OneDrive\TR\CV_data_use_me\TRproducts\SCLmega328-260101\utils.h
+F24=setup.c
+F25=sensors.c
+F26=switches.c
+F27=Z:\OneDrive\TR\CV_data_use_me\TRproducts\SCLmega328-260101\version.h
+F28=utils.h
 [Bookmarks1]
 TimeStamp=1537186152
 Row=155
@@ -663,9 +670,9 @@ BK9=-1
 [FoldedCode3]
 Blocks=0
 [Bookmarks4]
-TimeStamp=1537186153
-Row=4
-Column=26
+TimeStamp=1545706545
+Row=6
+Column=6
 ScrollPosX=0
 ScrollPosY=0
 BK0=-1
@@ -678,8 +685,6 @@ BK6=-1
 BK7=-1
 BK8=-1
 BK9=-1
-[FoldedCode4]
-Blocks=0
 [Bookmarks5]
 TimeStamp=982414275
 Row=0
@@ -799,11 +804,11 @@ BK9=-1
 [FoldedCode11]
 Blocks=0
 [Bookmarks12]
-TimeStamp=1545705653
-Row=77
-Column=21
+TimeStamp=1545755349
+Row=12
+Column=17
 ScrollPosX=0
-ScrollPosY=63
+ScrollPosY=11
 BK0=-1
 BK1=-1
 BK2=-1
@@ -814,14 +819,12 @@ BK6=-1
 BK7=-1
 BK8=-1
 BK9=-1
-[FoldedCode12]
-Blocks=0
 [Bookmarks13]
 TimeStamp=1545705192
-Row=142
-Column=37
+Row=143
+Column=70
 ScrollPosX=0
-ScrollPosY=119
+ScrollPosY=0
 BK0=-1
 BK1=-1
 BK2=-1
@@ -832,8 +835,6 @@ BK6=-1
 BK7=-1
 BK8=-1
 BK9=-1
-[FoldedCode13]
-Blocks=0
 [Bookmarks14]
 TimeStamp=1545687879
 Row=109
@@ -904,8 +905,6 @@ BK6=-1
 BK7=-1
 BK8=-1
 BK9=-1
-[FoldedCode17]
-Blocks=0
 [Bookmarks18]
 TimeStamp=926055432
 Row=0
@@ -970,8 +969,6 @@ BK6=-1
 BK7=-1
 BK8=-1
 BK9=-1
-[FoldedCode21]
-Blocks=0
 [Bookmarks22]
 TimeStamp=953299700
 Row=8
@@ -1006,8 +1003,6 @@ BK8=-1
 BK9=-1
 [FoldedCode23]
 Blocks=0
-[FoldedCode9]
-Blocks=0
 [FoldedCode19]
 Blocks=0
 [FoldedCode5]
@@ -1022,15 +1017,119 @@ Blocks=0
 Blocks=0
 [FoldedCode10]
 Blocks=0
+[FoldedCode12]
+Blocks=0
+[FoldedCode13]
+Blocks=0
+[Bookmarks24]
+TimeStamp=1545706560
+Row=109
+Column=1
+ScrollPosX=0
+ScrollPosY=74
+BK0=-1
+BK1=-1
+BK2=-1
+BK3=-1
+BK4=-1
+BK5=-1
+BK6=-1
+BK7=-1
+BK8=-1
+BK9=-1
+[FoldedCode24]
+Blocks=0
+[Bookmarks25]
+TimeStamp=1545691254
+Row=0
+Column=0
+ScrollPosX=0
+ScrollPosY=0
+BK0=-1
+BK1=-1
+BK2=-1
+BK3=-1
+BK4=-1
+BK5=-1
+BK6=-1
+BK7=-1
+BK8=-1
+BK9=-1
+[FoldedCode25]
+Blocks=0
+[Bookmarks26]
+TimeStamp=1545706578
+Row=52
+Column=18
+ScrollPosX=0
+ScrollPosY=0
+BK0=-1
+BK1=-1
+BK2=-1
+BK3=-1
+BK4=-1
+BK5=-1
+BK6=-1
+BK7=-1
+BK8=-1
+BK9=-1
+[FoldedCode26]
+Blocks=0
+[Bookmarks27]
+TimeStamp=1545714518
+Row=15
+Column=0
+ScrollPosX=0
+ScrollPosY=0
+BK0=-1
+BK1=-1
+BK2=-1
+BK3=-1
+BK4=-1
+BK5=-1
+BK6=-1
+BK7=-1
+BK8=-1
+BK9=-1
+[FoldedCode27]
+Blocks=0
+[FoldedCode4]
+Blocks=0
+[FoldedCode17]
+Blocks=0
+[FoldedCode21]
+Blocks=0
+[Bookmarks28]
+TimeStamp=1545690747
+Row=0
+Column=0
+ScrollPosX=0
+ScrollPosY=0
+BK0=-1
+BK1=-1
+BK2=-1
+BK3=-1
+BK4=-1
+BK5=-1
+BK6=-1
+BK7=-1
+BK8=-1
+BK9=-1
+[FoldedCode28]
+Blocks=0
+[FoldedCode9]
+Blocks=0
 [HeadersList]
-Files=5
+Files=7
 F1=Z:\OneDrive\TR\CV_data_use_me\TRproducts\SCLmega328-260101\SCLMEGA328-260101.c
 F2=Z:\OneDrive\TR\CV_data_use_me\TRproducts\SCLmega328-260101\UART.c
 F3=Z:\OneDrive\TR\CV_data_use_me\TRproducts\SCLmega328-260101\setup.c
 F4=Z:\OneDrive\TR\CV_data_use_me\TRproducts\SCLmega328-260101\sensors.c
 F5=Z:\OneDrive\TR\CV_data_use_me\TRproducts\SCLmega328-260101\switches.c
+F6=Z:\OneDrive\TR\CV_data_use_me\TRproducts\SCLmega328-260101\protocol.c
+F7=Z:\OneDrive\TR\CV_data_use_me\TRproducts\SCLmega328-260101\sniffer.c
 [Header1]
-Files=12
+Files=14
 F1=C:\cvavr\inc\mega328.h
 F2=C:\cvavr\inc\mega328p_bits.h
 F3=C:\cvavr\inc\stdio.h
@@ -1043,6 +1142,8 @@ F9=C:\cvavr\inc\stdint.h
 F10=setup.h
 F11=switches.h
 F12=version.h
+F13=protocol.h
+F14=sniffer.h
 [Header2]
 Files=3
 F1=C:\cvavr\inc\mega328p.h
@@ -1075,3 +1176,19 @@ F6=switches.h
 F7=sensors.h
 F8=C:\cvavr\inc\stdint.h
 F9=utils.h
+[Header6]
+Files=3
+F1=protocol.h
+F2=C:\cvavr\inc\stdint.h
+F3=C:\cvavr\inc\string.h
+[Header7]
+Files=9
+F1=sniffer.h
+F2=C:\cvavr\inc\stdint.h
+F3=uart.h
+F4=C:\cvavr\inc\string.h
+F5=C:\cvavr\inc\stdio.h
+F6=C:\cvavr\inc\io.h
+F7=C:\cvavr\inc\mega328.h
+F8=C:\cvavr\inc\mega328p_bits.h
+F9=C:\cvavr\inc\stdarg.h

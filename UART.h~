@@ -3,5 +3,5 @@
 
 char getchar(void);
 void putchar(char c);
-void uart_init(void);
+void uart_init(unsigned long baud);
 #endif

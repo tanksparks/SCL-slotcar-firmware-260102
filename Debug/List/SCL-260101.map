@@ -19,6 +19,15 @@ last_raw (switches.c)                                                           
 stable_state (switches.c)                                                         0x0561       1
 stable_count (switches.c)                                                         0x0562       1
 press_start_tick (switches.c)                                                     0x0563       4
+g_handler (protocol.c)                                                            0x0567       2
+linebuf (protocol.c)                                                              0x0569      80
+idx (protocol.c)                                                                  0x05B9       1
+line (sniffer.c)                                                                  0x05BA      80
+idx (sniffer.c)                                                                   0x060A       1
+q (sniffer.c)                                                                     0x060B     320
+q_wr (sniffer.c)                                                                  0x074B       1
+q_rd (sniffer.c)                                                                  0x074C       1
+q_count (sniffer.c)                                                               0x074D       1
 
 EEPROM Allocation [bytes]
 Variable                                                                          Address   Size
@@ -32,19 +41,23 @@ rx_buffer_overflow0                                                             
 FLASH Allocation [words]
 Function                                                                          Address   Size
 ------------------------------------------------------------------------------------------------
-led_poweron_blink                                                                 0x000A2     17
-print_startup_banner_G000                                                         0x000B3     29
-main                                                                              0x000D0     50
-usart_rx_isr                                                                      0x00102     31
-usart_tx_isr                                                                      0x00121     34
-putchar                                                                           0x00143     41
-uart_init                                                                         0x0016C     48
-setup                                                                             0x0019C     81
-timer1_ovf_isr                                                                    0x001ED    136
-switches_init                                                                     0x00275      3
-switch1_poll                                                                      0x00278    143
-put_usart_G100                                                                    0x00307     14
-_print_G100                                                                       0x00315    451
-printf                                                                            0x004D8     39
-strlen                                                                            0x004FF     12
-strlenf                                                                           0x0050B     13
+led_poweron_blink                                                                 0x000A6     17
+print_startup_banner_G000                                                         0x000B7     29
+protocol_on_cmd_G000                                                              0x000D4     36
+main                                                                              0x000F8     54
+usart_rx_isr                                                                      0x0012E     31
+usart_tx_isr                                                                      0x0014D     34
+putchar                                                                           0x0016F     41
+uart_init                                                                         0x00198     48
+setup                                                                             0x001C8     81
+timer1_ovf_isr                                                                    0x00219    136
+switches_init                                                                     0x002A1      3
+switch1_poll                                                                      0x002A4    145
+protocol_init                                                                     0x00335     13
+track_power_on                                                                    0x00342      3
+track_power_off                                                                   0x00345      3
+put_usart_G100                                                                    0x00348     14
+_print_G100                                                                       0x00356    451
+printf                                                                            0x00519     39
+strlen                                                                            0x00540     12
+strlenf                                                                           0x0054C     13

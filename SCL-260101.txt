@@ -1,0 +1,5 @@
+Slot car lap counter firmware.
+Started new firmware for 2026.
+will detect speed of car.
+Time stamp for sensors
+time stamp for sensor release,

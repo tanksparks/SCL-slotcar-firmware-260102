@@ -1,0 +1,10 @@
+VERSION:3 SOURCE_TIMESTAMP:5C2A7370
+NODE:I LEVEL:0 LINE:2 "Z:\OneDrive\TR\CV_data_use_me\TRproducts\SCLmega328-260101\protocol.h"
+NODE:I LEVEL:0 LINE:3 "C:\cvavr\inc\string.h"
+NODE:M LEVEL:0 LINE:5 "LINE_MAX"
+NODE:V LEVEL:0 LINE:7 "*g_handler_G005 -> RAM:????"
+NODE:V LEVEL:0 LINE:8 "linebuf_G005 -> RAM:????"
+NODE:V LEVEL:0 LINE:9 "idx_G005 -> RAM:????"
+NODE:F LEVEL:0 LINE:26 "protocol_init(protocol_handler_fn handler)"
+NODE:F LEVEL:0 LINE:32 "handle_line(unsigned char * s)"
+NODE:F LEVEL:0 LINE:52 "protocol_feed(uint8_t b)"

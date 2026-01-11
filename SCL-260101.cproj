@@ -53,6 +53,15 @@
     <Compile Include="switches.c">
       <SubType>compile</SubType>
     </Compile>
+    <Compile Include="protocol.c">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="sniffer.c">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="hardware.c">
+      <SubType>compile</SubType>
+    </Compile>
   </ItemGroup>
   <Import Project="$(AVRSTUDIO_EXE_PATH)\\vs\\CV.targets" />
 </Project>

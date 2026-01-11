@@ -10,7 +10,7 @@ Date    : 12/31/2025
 Author  : Daniel Groulx
 Company : Trackmate Racing
 Comments: 
-Program size: 1213 words (2426 bytes), 7.4% of FLASH
+Program size: 10%
  
 Chip type               : ATmega328
 Program type            : Application
@@ -26,6 +26,9 @@ Protocol
 @Atimeinticks
 All seems to work
 but reset seems to kill com port  260101
+260109
+260120  
+check how to power on and off in hardware.c
 *******************************************************/
 
 // I/O Registers definitions
@@ -37,6 +40,10 @@ but reset seems to kill com port  260101
 #include "setup.h"
 #include "switches.h"
 #include "version.h"
+#include "protocol.h"
+#include "sniffer.h"
+#include "hardware.h"
+
 #pragma used-
 
 #define LED1_MASK  (1 << 2)   // PD2
@@ -77,6 +84,34 @@ static void print_startup_banner(void)
            FW_NAME, FW_VERSION, FW_BUILD_NUM, FW_BUILD_DATE, FW_BUILD_TIME);
 }
 
+
+
+
+static void protocol_on_cmd(char cmd, const char* args)
+{
+    switch (cmd)
+    {
+        case 'P':
+            if (args && args[0] == '1')
+                track_power_on();
+            else
+                track_power_off();
+            break;
+
+        case 'S':
+           // start_lights_sequence();
+            break;
+
+        case 'X':
+            track_power_off();
+         //   lights_off();
+            break;
+    } 
+    
+}
+
+
+
 void main(void)
 {
   unsigned char lane;
@@ -85,7 +120,8 @@ void main(void)
   uart_init(9600);       
   switches_init();
   led_poweron_blink();
-  print_startup_banner();
+  print_startup_banner();         
+  protocol_init(protocol_on_cmd); // pass function 
    while (1)
     {              
       // no delays allowed in while loop 

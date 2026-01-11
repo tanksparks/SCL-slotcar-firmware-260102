@@ -1,4 +1,4 @@
-VERSION:3 SOURCE_TIMESTAMP:5C2196E8
+VERSION:3 SOURCE_TIMESTAMP:5C2A7157
 NODE:I LEVEL:0 LINE:3 "C:\cvavr\inc\mega328p.h"
 NODE:I LEVEL:0 LINE:4 "Z:\OneDrive\TR\CV_data_use_me\TRproducts\SCLmega328-260101\uart.h"
 NODE:M LEVEL:0 LINE:7 "F_CPU"
@@ -25,3 +25,4 @@ NODE:M LEVEL:0 LINE:108 "_ALTERNATE_PUTCHAR_"
 NODE:F LEVEL:0 LINE:110 "putchar(unsigned char c)"
 NODE:F LEVEL:0 LINE:127 "uart_init_codeVision_Wizzard(void)"
 NODE:F LEVEL:0 LINE:143 "uart_init(unsigned long baud)"
+NODE:F LEVEL:0 LINE:162 "uart_try_getchar(unsigned char * out)"

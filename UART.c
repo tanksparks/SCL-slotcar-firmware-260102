@@ -159,3 +159,20 @@ void uart_init(unsigned long baud)
     UCSR0C = (1<<UCSZ01) | (1<<UCSZ00);
 }
 
+  char uart_try_getchar(char* out)
+{
+    if (rx_counter0 == 0)
+        return 0; // no data available
+
+    *out = rx_buffer0[rx_rd_index0++];
+
+#if RX_BUFFER_SIZE0 != 256
+    if (rx_rd_index0 == RX_BUFFER_SIZE0) rx_rd_index0 = 0;
+#endif
+
+#asm("cli")
+    --rx_counter0;
+#asm("sei")
+
+    return 1; // got a byte
+}

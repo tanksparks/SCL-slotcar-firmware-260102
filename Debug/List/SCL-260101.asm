@@ -1465,9 +1465,9 @@ _0x0:
 	.DB  0x70,0xD,0xA,0x0,0x53,0x6C,0x6F,0x74
 	.DB  0x46,0x57,0x0,0x30,0x2E,0x31,0x2E,0x30
 	.DB  0x0,0x30,0x30,0x30,0x31,0x0,0x4A,0x61
-	.DB  0x6E,0x20,0x20,0x31,0x20,0x32,0x30,0x32
-	.DB  0x36,0x0,0x32,0x33,0x3A,0x35,0x30,0x3A
-	.DB  0x31,0x36,0x0,0x40,0x25,0x63,0x2C,0x25
+	.DB  0x6E,0x20,0x31,0x30,0x20,0x32,0x30,0x32
+	.DB  0x36,0x0,0x31,0x34,0x3A,0x35,0x33,0x3A
+	.DB  0x34,0x38,0x0,0x40,0x25,0x63,0x2C,0x25
 	.DB  0x6C,0x75,0x2C,0xD,0xA,0x0
 _0x80003:
 	.DB  0x1
@@ -1476,6 +1476,8 @@ _0x80004:
 _0x80000:
 	.DB  0x40,0x54,0x2C,0x25,0x6C,0x75,0x2C,0x25
 	.DB  0x6C,0x75,0x2C,0xD,0xA,0x0
+_0xC0000:
+	.DB  0x40,0x44,0x2C,0x25,0x73,0xD,0xA,0x0
 
 __GLOBAL_INI_TBL:
 	.DW  0x01
@@ -1579,21 +1581,21 @@ __GLOBAL_INI_END:
 	.SET power_ctrl_reg=smcr
 	#endif
 ;void led_poweron_blink(void)
-; 0000 0040 {
+; 0000 0046 {
 
 	.CSEG
 _led_poweron_blink:
 ; .FSTART _led_poweron_blink
-; 0000 0041 unsigned char i;
-; 0000 0042 for (i = 0; i < 4; i++)
+; 0000 0047 unsigned char i;
+; 0000 0048 for (i = 0; i < 4; i++)
 	ST   -Y,R17
 ;	i -> R17
 	LDI  R17,LOW(0)
 _0x4:
 	CPI  R17,4
 	BRSH _0x5
-; 0000 0043 {
-; 0000 0044 LED1_ON();   delay_ms(150);    LED1_OFF();   delay_ms(150);
+; 0000 0049 {
+; 0000 004A LED1_ON();   delay_ms(150);    LED1_OFF();   delay_ms(150);
 	SBI  0xB,2
 	LDI  R26,LOW(150)
 	LDI  R27,0
@@ -1602,20 +1604,20 @@ _0x4:
 	LDI  R26,LOW(150)
 	LDI  R27,0
 	CALL _delay_ms
-; 0000 0045 }
+; 0000 004B }
 	SUBI R17,-1
 	RJMP _0x4
 _0x5:
-; 0000 0046 }
-	RJMP _0x2060002
+; 0000 004C }
+	RJMP _0x2060003
 ; .FEND
 ;static void print_startup_banner(void)
-; 0000 0049 {
+; 0000 004F {
 _print_startup_banner_G000:
 ; .FSTART _print_startup_banner_G000
-; 0000 004A // %p = FLASH string in CodeVision
-; 0000 004B printf("\r\n%p v%p (build %p) %p %p\r\n",
-; 0000 004C FW_NAME, FW_VERSION, FW_BUILD_NUM, FW_BUILD_DATE, FW_BUILD_TIME);
+; 0000 0050 // %p = FLASH string in CodeVision
+; 0000 0051 printf("\r\n%p v%p (build %p) %p %p\r\n",
+; 0000 0052 FW_NAME, FW_VERSION, FW_BUILD_NUM, FW_BUILD_DATE, FW_BUILD_TIME);
 	__POINTW1FN _0x0,0
 	ST   -Y,R31
 	ST   -Y,R30
@@ -1632,47 +1634,115 @@ _print_startup_banner_G000:
 	LDI  R24,20
 	CALL _printf
 	ADIW R28,22
-; 0000 004D }
+; 0000 0053 }
 	RET
 ; .FEND
+;static void protocol_on_cmd(char cmd, const char* args)
+; 0000 0059 {
+_protocol_on_cmd_G000:
+; .FSTART _protocol_on_cmd_G000
+; 0000 005A switch (cmd)
+	CALL __SAVELOCR4
+	MOVW R16,R26
+	LDD  R19,Y+4
+;	cmd -> R19
+;	*args -> R16,R17
+	MOV  R30,R19
+	LDI  R31,0
+; 0000 005B {
+; 0000 005C case 'P':
+	CPI  R30,LOW(0x50)
+	LDI  R26,HIGH(0x50)
+	CPC  R31,R26
+	BRNE _0x9
+; 0000 005D if (args && args[0] == '1')
+	MOV  R0,R16
+	OR   R0,R17
+	BREQ _0xB
+	MOVW R26,R16
+	LD   R26,X
+	CPI  R26,LOW(0x31)
+	BREQ _0xC
+_0xB:
+	RJMP _0xA
+_0xC:
+; 0000 005E track_power_on();
+	CALL _track_power_on
+; 0000 005F else
+	RJMP _0xD
+_0xA:
+; 0000 0060 track_power_off();
+	CALL _track_power_off
+; 0000 0061 break;
+_0xD:
+	RJMP _0x8
+; 0000 0062 
+; 0000 0063 case 'S':
+_0x9:
+	CPI  R30,LOW(0x53)
+	LDI  R26,HIGH(0x53)
+	CPC  R31,R26
+	BREQ _0x8
+; 0000 0064 // start_lights_sequence();
+; 0000 0065 break;
+; 0000 0066 
+; 0000 0067 case 'X':
+	CPI  R30,LOW(0x58)
+	LDI  R26,HIGH(0x58)
+	CPC  R31,R26
+	BRNE _0x8
+; 0000 0068 track_power_off();
+	CALL _track_power_off
+; 0000 0069 //   lights_off();
+; 0000 006A break;
+; 0000 006B }
+_0x8:
+; 0000 006C 
+; 0000 006D }
+	JMP  _0x2060002
+; .FEND
 ;void main(void)
-; 0000 0050 {
+; 0000 0072 {
 _main:
 ; .FSTART _main
-; 0000 0051 unsigned char lane;
-; 0000 0052 char lane_char;
-; 0000 0053 setup();
+; 0000 0073 unsigned char lane;
+; 0000 0074 char lane_char;
+; 0000 0075 setup();
 ;	lane -> R17
 ;	lane_char -> R16
 	CALL _setup
-; 0000 0054 uart_init(9600);
+; 0000 0076 uart_init(9600);
 	__GETD2N 0x2580
 	RCALL _uart_init
-; 0000 0055 switches_init();
+; 0000 0077 switches_init();
 	CALL _switches_init
-; 0000 0056 led_poweron_blink();
+; 0000 0078 led_poweron_blink();
 	RCALL _led_poweron_blink
-; 0000 0057 print_startup_banner();
+; 0000 0079 print_startup_banner();
 	RCALL _print_startup_banner_G000
-; 0000 0058 while (1)
-_0x6:
-; 0000 0059 {
-; 0000 005A // no delays allowed in while loop
-; 0000 005B // We need to send data to PC as soon as possible
-; 0000 005C for (lane = 0; lane < 8; lane++)
+; 0000 007A protocol_init(protocol_on_cmd); // pass function
+	LDI  R26,LOW(_protocol_on_cmd_G000)
+	LDI  R27,HIGH(_protocol_on_cmd_G000)
+	CALL _protocol_init
+; 0000 007B while (1)
+_0x10:
+; 0000 007C {
+; 0000 007D // no delays allowed in while loop
+; 0000 007E // We need to send data to PC as soon as possible
+; 0000 007F for (lane = 0; lane < 8; lane++)
 	LDI  R17,LOW(0)
-_0xA:
+_0x14:
 	CPI  R17,8
-	BRSH _0xB
-; 0000 005D {
-; 0000 005E if (lane_event_pending[lane])
+	BRSH _0x15
+; 0000 0080 {
+; 0000 0081 if (lane_event_pending[lane])
 	CALL SUBOPT_0x1
 	LD   R30,Z
 	CPI  R30,0
-	BREQ _0xC
-; 0000 005F {
-; 0000 0060 unsigned long t = lane_event_time[lane];
-; 0000 0061 lane_event_pending[lane] = 0;
+	BREQ _0x16
+; 0000 0082 {
+; 0000 0083 unsigned long t = lane_event_time[lane];
+; 0000 0084 lane_event_pending[lane] = 0;
 	SBIW R28,4
 ;	t -> Y+0
 	CALL SUBOPT_0x2
@@ -1681,16 +1751,16 @@ _0xA:
 	CALL SUBOPT_0x1
 	LDI  R26,LOW(0)
 	STD  Z+0,R26
-; 0000 0062 
-; 0000 0063 lane_char = 'A' + lane;
+; 0000 0085 
+; 0000 0086 lane_char = 'A' + lane;
 	MOV  R30,R17
 	SUBI R30,-LOW(65)
 	MOV  R16,R30
-; 0000 0064 
-; 0000 0065 // NOW with trailing comma after timestamp
-; 0000 0066 // Format: @A,<timestamp>,\r\n
-; 0000 0067 // Lane 1 to 8 is A to H
-; 0000 0068 printf("@%c,%lu,\r\n", lane_char, t);
+; 0000 0087 
+; 0000 0088 // NOW with trailing comma after timestamp
+; 0000 0089 // Format: @A,<timestamp>,\r\n
+; 0000 008A // Lane 1 to 8 is A to H
+; 0000 008B printf("@%c,%lu,\r\n", lane_char, t);
 	__POINTW1FN _0x0,67
 	ST   -Y,R31
 	ST   -Y,R30
@@ -1699,21 +1769,21 @@ _0xA:
 	CLR  R22
 	CLR  R23
 	CALL SUBOPT_0x5
-; 0000 0069 }
+; 0000 008C }
 	ADIW R28,4
-; 0000 006A }
-_0xC:
+; 0000 008D }
+_0x16:
 	SUBI R17,-1
-	RJMP _0xA
-_0xB:
-; 0000 006B 
-; 0000 006C switch1_poll(); // it will send data to PC
+	RJMP _0x14
+_0x15:
+; 0000 008E 
+; 0000 008F switch1_poll(); // it will send data to PC
 	CALL _switch1_poll
-; 0000 006D }
-	RJMP _0x6
-; 0000 006E }
-_0xD:
-	RJMP _0xD
+; 0000 0090 }
+	RJMP _0x10
+; 0000 0091 }
+_0x17:
+	RJMP _0x17
 ; .FEND
 	#ifndef __SLEEP_DEFINED__
 	#define __SLEEP_DEFINED__
@@ -1780,7 +1850,7 @@ _0x20004:
 _0x20003:
 	LD   R16,Y+
 	LD   R17,Y+
-	RJMP _0x20012
+	RJMP _0x20013
 ; .FEND
 ;char getchar(void)
 ; 0001 0040 {
@@ -1831,7 +1901,7 @@ _usart_tx_isr:
 ; 0001 0068 }
 ; 0001 0069 }
 _0x2000A:
-_0x20012:
+_0x20013:
 	LD   R30,Y+
 	OUT  SREG,R30
 	LD   R31,Y+
@@ -1893,7 +1963,7 @@ _0x2000E:
 _0x20011:
 	SEI
 ; 0001 007D }
-_0x2060002:
+_0x2060003:
 	LD   R17,Y+
 	RET
 ; .FEND
@@ -1958,6 +2028,24 @@ _uart_init:
 	ADIW R28,8
 	RET
 ; .FEND
+;char uart_try_getchar(char* out)
+; 0001 00A3 {
+; 0001 00A4 if (rx_counter0 == 0)
+;	*out -> R16,R17
+; 0001 00A5 return 0; // no data available
+; 0001 00A6 
+; 0001 00A7 *out = rx_buffer0[rx_rd_index0++];
+; 0001 00A8 
+; 0001 00A9 #if RX_BUFFER_SIZE0 != 256
+; 0001 00AA if (rx_rd_index0 == RX_BUFFER_SIZE0) rx_rd_index0 = 0;
+; 0001 00AB #endif
+; 0001 00AC 
+; 0001 00AD #asm("cli")
+; 0001 00AE --rx_counter0;
+; 0001 00AF #asm("sei")
+; 0001 00B0 
+; 0001 00B1 return 1; // got a byte
+; 0001 00B2 }
 	#ifndef __SLEEP_DEFINED__
 	#define __SLEEP_DEFINED__
 	.EQU __se_bit=0x01
@@ -2413,7 +2501,7 @@ _switch1_poll:
 	BRSH _0x80005
 ; 0004 0021 return;
 	LDD  R17,Y+0
-	RJMP _0x2060001
+	JMP  _0x2060001
 ; 0004 0022 
 ; 0004 0023 last_sample_tick = now;
 _0x80005:
@@ -2533,7 +2621,168 @@ _0x80010:
 ; 0004 004B }
 _0x8000C:
 	LDD  R17,Y+0
-	RJMP _0x2060001
+	JMP  _0x2060001
+; .FEND
+;void protocol_init(protocol_handler_fn handler)
+; 0005 001B {
+
+	.CSEG
+_protocol_init:
+; .FSTART _protocol_init
+; 0005 001C g_handler = handler;
+	ST   -Y,R17
+	ST   -Y,R16
+	MOVW R16,R26
+;	*handler -> R16,R17
+	__PUTWMRN _g_handler_G005,0,16,17
+; 0005 001D idx = 0;
+	LDI  R30,LOW(0)
+	STS  _idx_G005,R30
+; 0005 001E }
+	LD   R16,Y+
+	LD   R17,Y+
+	RET
+; .FEND
+;static void handle_line(char* s)
+; 0005 0021 {
+; 0005 0022 char cmd;
+; 0005 0023 const char* args = 0;   // NULL = no args
+; 0005 0024 
+; 0005 0025 if (s[0] != '@' || s[1] == 0)
+;	*s -> R20,R21
+;	cmd -> R17
+;	*args -> R18,R19
+; 0005 0026 return;
+; 0005 0027 
+; 0005 0028 cmd = s[1];
+; 0005 0029 
+; 0005 002A if (s[2] == ',')
+; 0005 002B args = &s[3];       // points into RAM buffer
+; 0005 002C else if (s[2] != 0)
+; 0005 002D args = &s[2];
+; 0005 002E 
+; 0005 002F if (g_handler)
+; 0005 0030 g_handler(cmd, args);
+; 0005 0031 }
+;void protocol_feed(uint8_t b)
+; 0005 0035 {
+; 0005 0036 if (b == '\r') return;
+;	b -> R17
+; 0005 0037 
+; 0005 0038 if (b == '\n')
+; 0005 0039 {
+; 0005 003A linebuf[idx] = 0;
+; 0005 003B if (idx > 0)
+; 0005 003C handle_line(linebuf);
+; 0005 003D idx = 0;
+; 0005 003E return;
+; 0005 003F }
+; 0005 0040 
+; 0005 0041 if (idx < (LINE_MAX - 1))
+; 0005 0042 linebuf[idx++] = (char)b;
+; 0005 0043 else
+; 0005 0044 idx = 0; // overflow -> reset
+; 0005 0045 }
+	#ifndef __SLEEP_DEFINED__
+	#define __SLEEP_DEFINED__
+	.EQU __se_bit=0x01
+	.EQU __sm_mask=0x0E
+	.EQU __sm_adc_noise_red=0x02
+	.EQU __sm_powerdown=0x04
+	.EQU __sm_powersave=0x06
+	.EQU __sm_standby=0x0C
+	.EQU __sm_ext_standby=0x0E
+	.SET power_ctrl_reg=smcr
+	#endif
+;static void q_push_line(const char* s)
+; 0006 0019 {
+
+	.CSEG
+; 0006 001A if (q_count >= SNIFF_Q_LINES) return; // drop if full (sniffer shouldn't break timing)
+;	*s -> R16,R17
+; 0006 001B strncpy(q[q_wr], s, SNIFF_LINE_MAX - 1);
+; 0006 001C q[q_wr][SNIFF_LINE_MAX - 1] = 0;
+; 0006 001D q_wr = (uint8_t)((q_wr + 1) % SNIFF_Q_LINES);
+; 0006 001E q_count++;
+; 0006 001F }
+;static uint8_t q_pop_line(char* out)
+; 0006 0022 {
+; 0006 0023 if (q_count == 0) return 0;
+;	*out -> R16,R17
+; 0006 0024 strcpy(out, q[q_rd]);
+; 0006 0025 q_rd = (uint8_t)((q_rd + 1) % SNIFF_Q_LINES);
+; 0006 0026 #asm("cli")
+; 0006 0027 q_count--;
+; 0006 0028 #asm("sei")
+; 0006 0029 return 1;
+; 0006 002A }
+;void sniffer_init(void)
+; 0006 002D {
+; 0006 002E idx = 0;
+; 0006 002F q_wr = q_rd = q_count = 0;
+; 0006 0030 }
+;void sniffer_feed(uint8_t b)
+; 0006 0034 {
+; 0006 0035 if (b == '\r') return; // ignore CR
+;	b -> R17
+; 0006 0036 
+; 0006 0037 if (b == '\n')
+; 0006 0038 {
+; 0006 0039 line[idx] = 0;
+; 0006 003A if (idx > 0) q_push_line(line);
+; 0006 003B idx = 0;
+; 0006 003C return;
+; 0006 003D }
+; 0006 003E 
+; 0006 003F if (idx < (SNIFF_LINE_MAX - 1))
+; 0006 0040 line[idx++] = (char)b;
+; 0006 0041 else
+; 0006 0042 idx = 0; // overflow: reset
+; 0006 0043 }
+;void sniffer_poll(void)
+; 0006 0047 {
+; 0006 0048 char tmp[SNIFF_LINE_MAX];
+; 0006 0049 if (q_pop_line(tmp))
+;	tmp -> Y+0
+; 0006 004A {
+; 0006 004B // Prefix so you can distinguish sniffer output from normal messages
+; 0006 004C printf("@D,%s\r\n", tmp);
+; 0006 004D }
+; 0006 004E }
+	#ifndef __SLEEP_DEFINED__
+	#define __SLEEP_DEFINED__
+	.EQU __se_bit=0x01
+	.EQU __sm_mask=0x0E
+	.EQU __sm_adc_noise_red=0x02
+	.EQU __sm_powerdown=0x04
+	.EQU __sm_powersave=0x06
+	.EQU __sm_standby=0x0C
+	.EQU __sm_ext_standby=0x0E
+	.SET power_ctrl_reg=smcr
+	#endif
+;void track_power_on(void)
+; 0007 000B {
+
+	.CSEG
+_track_power_on:
+; .FSTART _track_power_on
+; 0007 000C TRACK_POWER_DDR |= (1 << TRACK_POWER_PIN);   // ensure output
+	SBI  0x4,2
+; 0007 000D TRACK_POWER_PORT |= (1 << TRACK_POWER_PIN);  // relay ON
+	SBI  0x5,2
+; 0007 000E }
+	RET
+; .FEND
+;void track_power_off(void)
+; 0007 0011 {
+_track_power_off:
+; .FSTART _track_power_off
+; 0007 0012 TRACK_POWER_DDR |= (1 << TRACK_POWER_PIN);
+	SBI  0x4,2
+; 0007 0013 TRACK_POWER_PORT &= ~(1 << TRACK_POWER_PIN); // relay OFF
+	CBI  0x5,2
+; 0007 0014 }
+	RET
 ; .FEND
 	#ifndef __SLEEP_DEFINED__
 	#define __SLEEP_DEFINED__
@@ -2557,6 +2806,7 @@ _put_usart_G100:
 	CALL _putchar
 	MOVW R26,R16
 	CALL SUBOPT_0x7
+_0x2060002:
 	CALL __LOADLOCR4
 _0x2060001:
 	ADIW R28,5
@@ -3074,8 +3324,6 @@ _printf:
 ; .FEND
 
 	.CSEG
-
-	.CSEG
 _strlen:
 ; .FSTART _strlen
 	ST   -Y,R27
@@ -3111,6 +3359,8 @@ strlenf1:
     movw r30,r26
     ret
 ; .FEND
+
+	.CSEG
 
 	.DSEG
 _g_time_ticks:
@@ -3149,6 +3399,24 @@ _stable_count_S0040001000:
 	.BYTE 0x1
 _press_start_tick_S0040001000:
 	.BYTE 0x4
+_g_handler_G005:
+	.BYTE 0x2
+_linebuf_G005:
+	.BYTE 0x50
+_idx_G005:
+	.BYTE 0x1
+_line_G006:
+	.BYTE 0x50
+_idx_G006:
+	.BYTE 0x1
+_q_G006:
+	.BYTE 0x140
+_q_wr_G006:
+	.BYTE 0x1
+_q_rd_G006:
+	.BYTE 0x1
+_q_count_G006:
+	.BYTE 0x1
 
 	.CSEG
 ;OPTIMIZER ADDED SUBROUTINE, CALLED 5 TIMES, CODE SIZE REDUCTION:5 WORDS
