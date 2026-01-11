@@ -1,6 +1,0 @@
-VERSION:3 SOURCE_TIMESTAMP:5C219C40
-NODE:I LEVEL:0 LINE:3 "C:\cvavr\inc\mega328p.h"
-NODE:I LEVEL:0 LINE:4 "Z:\OneDrive\TR\CV_data_use_me\TRproducts\SCLmega328-260101\setup.h"
-NODE:I LEVEL:0 LINE:5 "Z:\OneDrive\TR\CV_data_use_me\TRproducts\SCLmega328-260101\uart.h"
-NODE:M LEVEL:0 LINE:8 "F_CPU"
-NODE:F LEVEL:0 LINE:12 "setup(void)"
