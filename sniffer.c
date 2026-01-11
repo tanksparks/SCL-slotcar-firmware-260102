@@ -73,7 +73,7 @@ void sniffer_poll(void)
     if (q_pop_line(tmp))
     {
         // Prefix so you can distinguish sniffer output from normal messages
-        printf("@D,%s\r\n", tmp);
+        printf("@L,%s\r\n", tmp);
     }
 }
 

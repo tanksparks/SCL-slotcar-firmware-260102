@@ -34,7 +34,7 @@ you can use my .gitignore file in other projects
 
 *******************************************************/
 
-// 260111
+// 260111   Flash = 11.3% used
 
 // I/O Registers definitions
 #include <mega328.h>
@@ -106,7 +106,7 @@ void main(void)
                 // NOW with trailing comma after timestamp
                 // Format: @A,<timestamp>,\r\n 
                 // Lane 1 to 8 is A to H
-                printf("@%c,%lu,\r\n", lane_char, t);
+                printf("@%c,%lu,\r\n", lane_char, t);   
             }
         }         
         protocol_poll();   // <-- reads PC commands like @P,1\r\n and calls protocol_on_cmd()
@@ -143,12 +143,12 @@ static void protocol_on_cmd(char cmd, const char* args)
             {
                 track_power_on();    
                  // send timestamped power-on event
-                // safe way of reading 32 bit value from interrupt     
+                // safe way of reading 32 bit tick value from interrupt     
                 #asm("cli")
                 ts = g_time_ticks;
                 #asm("sei")
                 
-                printf("@P,1,%lu\r\n", ts);
+                printf("@P,1,%lu,\r\n", ts);
             }
             else
              {
@@ -157,7 +157,7 @@ static void protocol_on_cmd(char cmd, const char* args)
                 ts = g_time_ticks;
                 #asm("sei")
                 
-                printf("@P,0,%lu\r\n", ts); 
+                printf("@P,0,%lu,\r\n", ts); 
                   
              }   
             break;
@@ -169,7 +169,12 @@ static void protocol_on_cmd(char cmd, const char* args)
         case 'X':
             track_power_off();
          //   lights_off();
-            break;
+            break;      
+        case 'V':
+              print_startup_banner();
+              break;
+
+        break;    
     } 
     
 }

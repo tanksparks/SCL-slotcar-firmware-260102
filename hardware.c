@@ -3,9 +3,9 @@
 #include <mega328p.h>
 #include "hardware.h"
 
-#define TRACK_POWER_PORT PORTB
-#define TRACK_POWER_DDR  DDRB
-#define TRACK_POWER_PIN  2   // PB2 (example)
+#define TRACK_POWER_PORT PORTC
+#define TRACK_POWER_DDR  DDRC
+#define TRACK_POWER_PIN  5   // PC5 (example)
 
 void track_power_on(void)
 {
