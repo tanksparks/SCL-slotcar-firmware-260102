@@ -29,6 +29,7 @@ but reset seems to kill com port  260101
 260109
 260120  
 check how to power on and off in hardware.c
+On GitHub      260101
 *******************************************************/
 
 // I/O Registers definitions

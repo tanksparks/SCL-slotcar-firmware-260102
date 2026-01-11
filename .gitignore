@@ -17,6 +17,9 @@ Release/
 # CodeVision / IDE generated files
 # -------------------------------------------------
 *.hci
+*.cbi
+*.cci
+
 
 # -------------------------------------------------
 # Build artifacts
