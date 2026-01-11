@@ -1,7 +1,7 @@
 // protocol.c
 #include "protocol.h"
 #include <string.h>
-
+#include "UART.h"
 #define LINE_MAX 80
 
 static protocol_handler_fn g_handler = 0;
@@ -21,6 +21,18 @@ static uint8_t idx = 0;
  * protocols or modes (slot racing, drag racing, demo mode, etc.) without
  * changing the parser code.
  */
+
+
+
+void protocol_poll(void)
+{
+    char ch;
+    while (uart_try_getchar(&ch))
+    {
+        protocol_feed((uint8_t)ch);
+    }
+}
+
 
 
 void protocol_init(protocol_handler_fn handler)

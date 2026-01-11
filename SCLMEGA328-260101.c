@@ -29,7 +29,9 @@ but reset seems to kill com port  260101
 260109
 260120  
 check how to power on and off in hardware.c
-On GitHub      260101
+using GitHub trakmate/SCL-slotcar-firmware-260102 
+you can use my .gitignore file in other projects
+
 *******************************************************/
 
 // I/O Registers definitions
@@ -52,7 +54,6 @@ On GitHub      260101
 #define LED1_ON()   (PORTD |=  LED1_MASK)
 #define LED1_OFF()  (PORTD &= ~LED1_MASK)
 
-
 #define LEDB1 PORTC.0 
 #define LEDB2 PORTC.1 
 #define LEDB3 PORTC.2 
@@ -69,6 +70,50 @@ On GitHub      260101
 
 // Declare your global variables here
 
+// Private functions
+void led_poweron_blink(void);
+static void print_startup_banner(void);
+static void print_startup_banner(void);
+static void protocol_on_cmd(char cmd, const char* args);
+
+
+void main(void)
+{
+  unsigned char lane;
+  char lane_char; 
+  setup(); 
+  uart_init(9600);       
+  switches_init();
+  led_poweron_blink();
+  print_startup_banner();      
+     
+  protocol_init(protocol_on_cmd); // pass function 
+   while (1)
+    {              
+      // no delays allowed in while loop 
+      // We need to send data to PC as soon as possible
+        for (lane = 0; lane < 8; lane++)
+        {
+            if (lane_event_pending[lane])
+            {
+                unsigned long t = lane_event_time[lane];
+                lane_event_pending[lane] = 0;
+
+                lane_char = 'A' + lane;
+
+                // NOW with trailing comma after timestamp
+                // Format: @A,<timestamp>,\r\n 
+                // Lane 1 to 8 is A to H
+                printf("@%c,%lu,\r\n", lane_char, t);
+            }
+        }         
+        protocol_poll();   // <-- reads PC commands like @P,1\r\n and calls protocol_on_cmd()
+        switch1_poll(); // it will send data to PC
+    }
+}
+
+// --------------------------------------------
+
 void led_poweron_blink(void)
 {
     unsigned char i;
@@ -84,8 +129,6 @@ static void print_startup_banner(void)
     printf("\r\n%p v%p (build %p) %p %p\r\n",
            FW_NAME, FW_VERSION, FW_BUILD_NUM, FW_BUILD_DATE, FW_BUILD_TIME);
 }
-
-
 
 
 static void protocol_on_cmd(char cmd, const char* args)
@@ -109,40 +152,4 @@ static void protocol_on_cmd(char cmd, const char* args)
             break;
     } 
     
-}
-
-
-
-void main(void)
-{
-  unsigned char lane;
-  char lane_char; 
-  setup(); 
-  uart_init(9600);       
-  switches_init();
-  led_poweron_blink();
-  print_startup_banner();         
-  protocol_init(protocol_on_cmd); // pass function 
-   while (1)
-    {              
-      // no delays allowed in while loop 
-      // We need to send data to PC as soon as possible
-        for (lane = 0; lane < 8; lane++)
-        {
-            if (lane_event_pending[lane])
-            {
-                unsigned long t = lane_event_time[lane];
-                lane_event_pending[lane] = 0;
-
-                lane_char = 'A' + lane;
-
-                // NOW with trailing comma after timestamp
-                // Format: @A,<timestamp>,\r\n 
-                // Lane 1 to 8 is A to H
-                printf("@%c,%lu,\r\n", lane_char, t);
-            }
-        }         
-        
-        switch1_poll(); // it will send data to PC
-    }
 }
