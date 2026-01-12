@@ -7,7 +7,6 @@
 #define F_CPU 16000000UL   // set to your actual crystal
 #endif
 
-
 #define DATA_REGISTER_EMPTY (1<<UDRE0)
 #define RX_COMPLETE (1<<RXC0)
 #define FRAMING_ERROR (1<<FE0)

@@ -31,7 +31,7 @@ but reset seems to kill com port  260101
 check how to power on and off in hardware.c
 using GitHub trakmate/SCL-slotcar-firmware-260102 
 you can use my .gitignore file in other projects
-
+poweron/poweroff tested with x-ctu
 *******************************************************/
 
 // 260111   Flash = 11.3% used

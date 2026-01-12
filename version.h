@@ -10,6 +10,6 @@
 #define FW_BUILD_TIME  __TIME__
 
 // Optional: bump when you want a simple increasing number
-#define FW_BUILD_NUM   "0001"
+#define FW_BUILD_NUM   "0002"
 
 #endif

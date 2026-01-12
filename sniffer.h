@@ -1,5 +1,8 @@
 // sniffer.h
-#pragma once
+#ifndef SNIFFER_H
+#define SNIFFER_H
+        
+
 #include <stdint.h>
 
 void sniffer_init(void);
@@ -9,3 +12,6 @@ void sniffer_feed(uint8_t b);
 
 // call often from main loop to flush logs out the UART
 void sniffer_poll(void);
+
+
+#endif
