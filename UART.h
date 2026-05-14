@@ -7,4 +7,5 @@ char getchar(void);
 void putchar(char c);
 void uart_init(unsigned long baud);
 char uart_try_getchar(char* out);
+void uart_flush_rx(void);
 #endif

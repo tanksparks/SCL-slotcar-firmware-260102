@@ -7,6 +7,7 @@
 static protocol_handler_fn g_handler = 0;
 static char linebuf[LINE_MAX];
 static uint8_t idx = 0;
+static char raw_cmd_args[2] = { 1, 0 };
 /*
  * protocol_init()
  *
@@ -41,6 +42,11 @@ void protocol_init(protocol_handler_fn handler)
     idx = 0;
 }
 
+void protocol_reset(void)
+{
+    idx = 0;
+}
+
 static void handle_line(char* s)
 {
     char cmd;
@@ -63,14 +69,19 @@ static void handle_line(char* s)
 
 void protocol_feed(uint8_t b)
 {
-    if (b == '\r') return;
-
-    if (b == '\n')
+    if (b == '\r' || b == '\n')
     {
         linebuf[idx] = 0;
         if (idx > 0)
             handle_line(linebuf);
         idx = 0;
+        return;
+    }
+
+    if (idx == 0 && b != '@')
+    {
+        if (g_handler)
+            g_handler((char)b, raw_cmd_args);
         return;
     }
 

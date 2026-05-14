@@ -158,6 +158,18 @@ void uart_init(unsigned long baud)
     UCSR0C = (1<<UCSZ01) | (1<<UCSZ00);
 }
 
+void uart_flush_rx(void)
+{
+    #asm("cli")
+    while (UCSR0A & RX_COMPLETE)
+        rx_buffer0[0] = UDR0;
+    rx_wr_index0 = 0;
+    rx_rd_index0 = 0;
+    rx_counter0 = 0;
+    rx_buffer_overflow0 = 0;
+    #asm("sei")
+}
+
   char uart_try_getchar(char* out)
 {
     if (rx_counter0 == 0)

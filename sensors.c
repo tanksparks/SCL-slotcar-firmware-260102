@@ -20,14 +20,19 @@
 
 // Global time in "ticks" (0.1 ms units at 10 kHz)
 volatile unsigned long g_time_ticks = 0;       // 32 bit ticker
+volatile unsigned char g_sensor_trigger_level = 0; // 0 = low triggered, 1 = high triggered
 
 // Per-lane timing + event flags
 volatile unsigned long lane_last_time[8]      = {0};
 volatile unsigned long lane_event_time[8]     = {0};
 volatile unsigned char lane_event_pending[8]  = {0};
+volatile unsigned long lane_release_time[8]   = {0};
+volatile unsigned char lane_release_pending[8]= {0};
 
-// Debounce / glitch filter: how many *consecutive* low samples seen
+// Debounce / glitch filter: how many consecutive trigger/release samples seen
 static unsigned char low_count[8] = {0};
+static unsigned char high_count[8] = {0};
+static unsigned char sensor_active[8] = {0};
 
 // Which port each sensor is on: 0 = PINB, 1 = PIND
 static const unsigned char sensor_port_index[8] = {
@@ -47,6 +52,15 @@ static const unsigned char sensor_bit_mask[8] = {
     (1<<7)  // SENSOR8 = PD7
 };
 
+void sensors_set_trigger_level(unsigned char level)
+{
+    g_sensor_trigger_level = level ? 1 : 0;
+}
+
+unsigned char sensors_get_trigger_level(void)
+{
+    return g_sensor_trigger_level;
+}
 
 // Timer1 overflow interrupt service routine
 interrupt [TIM1_OVF] void timer1_ovf_isr(void)
@@ -55,7 +69,7 @@ interrupt [TIM1_OVF] void timer1_ovf_isr(void)
     unsigned char i;
     unsigned char pinb;
     unsigned char pind;
-    unsigned char is_low;
+    unsigned char is_triggered;
 
     // Reinitialize Timer1 value (adjust 0xF9C0 if you change tick rate)
     TCNT1H = 0xF9C0 >> 8;
@@ -86,22 +100,25 @@ interrupt [TIM1_OVF] void timer1_ovf_isr(void)
             raw = pind;
         }
 
-        // Active-low: sensor "on" when pin reads 0
-        is_low = ((raw & sensor_bit_mask[i]) == 0);
+        // Sensor is triggered when the input level matches g_sensor_trigger_level.
+        is_triggered = (((raw & sensor_bit_mask[i]) ? 1 : 0) == g_sensor_trigger_level);
 
-        // Debounce / glitch filter: consecutive low samples
-        if (is_low)
+        // Debounce / glitch filter: consecutive trigger samples
+        if (is_triggered)
         {
             if (low_count[i] < 255)
                 low_count[i]++;
+            high_count[i] = 0;
         }
         else
         {
             low_count[i] = 0;
+            if (high_count[i] < 255)
+                high_count[i]++;
         }
 
-        // Enough consecutive lows? (3 samples in a row)
-        if (low_count[i] == 3)
+        // Enough consecutive trigger samples? (3 samples in a row)
+        if (!sensor_active[i] && low_count[i] == 3)
         {
             // Min time gap filter (ignore double triggers/glitches)
             if (now - lane_last_time[i] >= MIN_GAP_TICKS)
@@ -109,7 +126,16 @@ interrupt [TIM1_OVF] void timer1_ovf_isr(void)
                 lane_last_time[i]      = now;
                 lane_event_time[i]     = now;
                 lane_event_pending[i]  = 1;
+                sensor_active[i]       = 1;
             }
+        }
+
+        // Sensor released? Require 3 release samples to match the press debounce.
+        if (sensor_active[i] && high_count[i] == 3)
+        {
+            sensor_active[i]          = 0;
+            lane_release_time[i]      = now;
+            lane_release_pending[i]   = 1;
         }
     }
 }

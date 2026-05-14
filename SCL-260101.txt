@@ -3,3 +3,23 @@ Started new firmware for 2026.
 will detect speed of car.
 Time stamp for sensors
 time stamp for sensor release,
+
+Protocol mode:
+Power-up loads the last selected protocol mode from EEPROM.
+Blank/invalid EEPROM defaults to new protocol.
+Hold track call button for 5 seconds to toggle new/old protocol while held.
+The selected mode is saved to EEPROM when toggled.
+LED1 off = new protocol.
+LED1 on = old protocol.
+Serial traffic does not auto-detect or change protocol mode.
+UART receive buffer and protocol parser buffer are cleared when switching modes.
+
+Old protocol:
+Only accepted while manually switched to old protocol mode.
+Old mode waits quietly until S is received.
+S = old protocol start/timing enable, starts 200,CR output every 200 ms.
+P = old protocol pause/timing stop.
+V = old firmware version response, V8.4,CR.
+Track call button sends W in old protocol with a 2.2 second holdoff.
+C0 = sensor input low is triggered, saved to EEPROM.
+C1 = sensor input high is triggered, saved to EEPROM.
